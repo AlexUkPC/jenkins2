@@ -8,15 +8,15 @@ pipeline {
     stages {
         stage('Webpacker Install') {
             steps {
-                sh '/usr/local/bin/docker-compose run --rm web_itbookstorejenkins bin/rails webpacker:install'
+                sh '/usr/local/bin/docker-compose run --rm web_jenkins2 bin/rails webpacker:install'
             }
         }
         stage('Build') {
             steps {
                 sh '/usr/local/bin/docker-compose stop'
                 sh '/usr/local/bin/docker-compose up -d'
-                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_itbookstorejenkins bin/rails db:create'
-                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_itbookstorejenkins bin/rails db:migrate'
+                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_jenkins2 bin/rails db:create'
+                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_jenkins2 bin/rails db:migrate'
                 timeout(120) {
                     waitUntil {
                         script {
@@ -34,7 +34,7 @@ pipeline {
         }
         stage('test') {
             steps {
-                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_itbookstorejenkins bin/rails test:models'
+                sh '/usr/local/bin/docker-compose exec -T --user "$(id -u):$(id -g)" web_jenkins2 bin/rails test:models'
             }   
         } 
         // stage('Stop server') {

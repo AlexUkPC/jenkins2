@@ -1,1 +1,2 @@
 DATABASE_HOST=database_jenkins2
+DISABLE_SPRING=true
